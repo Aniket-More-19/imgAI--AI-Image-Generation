@@ -1,22 +1,44 @@
 import { useState } from "react";
 import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
+import { useSurpriseMePrompt } from "../hooks/surpriseMe";
+
+type FormDataType = {
+  name: string;
+  prompt: string;
+};
 
 const Generate = () => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormDataType>({
     name: "",
     prompt: "",
   });
 
   const [imageUrl, setImageUrl] = useState<string>("");
 
-  const handleSubmit = () => {};
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  console.log("form : ", form);
+
+  const handleSupriseMe = () => {
+    const surprisePrompt = useSurpriseMePrompt();
+    // console.log(prompt);
+
+    setForm((prev) => ({
+      ...prev,
+      prompt: surprisePrompt,
+    }));
+  };
 
   const handleGenerate = () => {};
 
-  const handleSupriseMe = () => {};
-
-  const handleChange = () => {};
+  const handleSubmit = () => {};
 
   return (
     <section className="px-4 md:px-10 md:px-20 py-4 md:py-8 lg:py-10">
@@ -28,20 +50,24 @@ const Generate = () => {
 
       <form className="mt-4" onSubmit={handleSubmit}>
         <CustomInput
+          value={form.name}
+          name="name"
           className="mb-6"
           placeholder="ex. Aniket More"
           label="Name"
-          onChange={handleChange}
+          onChange={handleFormChange}
         ></CustomInput>
 
         <CustomInput
+          value={form.prompt}
+          name="prompt"
           className="mb-6"
           placeholder="ex. cat flying in space"
           label="Prompt"
-          onChange={handleChange}
+          onChange={handleFormChange}
         ></CustomInput>
 
-        <CustomButton className="mb-6" onClick={handleSupriseMe}>
+        <CustomButton type="button" className="mb-6" onClick={handleSupriseMe}>
           Suprise Me
         </CustomButton>
 
@@ -58,6 +84,7 @@ const Generate = () => {
         </div>
 
         <CustomButton
+          type="button"
           className="mb-6 w-full md:w-3/8 lg:w-2/8"
           onClick={handleGenerate}
         >
@@ -70,6 +97,7 @@ const Generate = () => {
         </p>
 
         <CustomButton
+          type="submit"
           className="mb-6 w-full md:w-3/8 lg:w-2/8"
           onClick={handleGenerate}
         >

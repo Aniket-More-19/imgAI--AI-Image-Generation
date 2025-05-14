@@ -1,14 +1,20 @@
+import { ChangeEventHandler } from "react";
+
 type inputType = {
+  name: string;
   className: string;
+  value: string;
   placeholder: string;
   label?: string;
   isIcon?: boolean;
   iconImage?: React.ReactElement;
-  onChange: Function;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 const CustomInput: React.FC<inputType> = ({
+  name,
   className,
+  value,
   placeholder,
   label,
   isIcon,
@@ -30,12 +36,14 @@ const CustomInput: React.FC<inputType> = ({
           )}
 
           <input
+            value={value}
+            name={name}
             type="text"
             className={`border-1 rounded-md focus:border-2 focus:border-blue-600 py-2 px-4 text-lg w-full outline-none ${
               isIcon && iconImage && "pl-14"
             } `}
             placeholder={placeholder}
-            onChange={() => onChange}
+            onChange={onChange}
           />
         </div>
       </div>

@@ -1,8 +1,10 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import CustomButton from "../components/CustomButton";
 import CustomInput from "../components/CustomInput";
+import { useState } from "react";
 
 const Home = () => {
+  const [searchText, setSearchText] = useState<string>("");
+
   const communityImages = [
     {
       imgId: 1,
@@ -66,6 +68,11 @@ const Home = () => {
     },
   ];
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log("input is : ", e.target.value);
+    setSearchText(e.target.value);
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <section className="home px-6 py-3 md:px-12 lg:px-20 flex-1 overflow-y-auto">
@@ -81,15 +88,26 @@ const Home = () => {
 
         <div className="mt-8">
           <CustomInput
+            value={searchText}
+            name="search-images"
             className=""
             placeholder="Search images"
             isIcon={true}
             iconImage={<MagnifyingGlassIcon />}
-            onChange={() => {}}
+            onChange={handleInputChange}
           ></CustomInput>
         </div>
 
-        <div className="image-grid mt-6 md:mt-10 grid grid-cols-2 auto-rows-[10rem] md:grid-cols-3 md:auto-rows-[12rem] lg:grid-cols-4 lg:auto-rows-[15rem] gap-3">
+        {searchText !== "" && (
+          <div className="mt-3">
+            <span className="text-lg text-gray-600">
+              Searching for{" "}
+              <span className="text-gray-900 font-bold">{searchText}</span>
+            </span>
+          </div>
+        )}
+
+        <div className="image-grid mt-4 md:mt-8 grid grid-cols-2 auto-rows-[10rem] md:grid-cols-3 md:auto-rows-[12rem] lg:grid-cols-4 lg:auto-rows-[15rem] gap-3">
           {communityImages.map((image: any) => (
             <div
               key={image.imgId}
@@ -101,9 +119,12 @@ const Home = () => {
                 alt=""
               />
 
-              <div className="absolute hidden group-hover:block border-2 bottom-0 w-full p-2 text-center bg-gray-400">
-                <span className="font-semibold">{image.username}</span> <br />
-                <span className="truncate">{image.prompt}</span>
+              <div className="absolute hidden group-hover:block border-2 text-center bottom-0 w-full p-2 bg-[#f1f1f1] opacity-75">
+                <span className="font-semibold truncate">{image.username}</span>
+                <br />
+                <span className="truncate flex justify-center">
+                  {image.prompt}
+                </span>
               </div>
             </div>
           ))}

@@ -36,7 +36,24 @@ const Generate = () => {
     }));
   };
 
-  const handleGenerate = () => {};
+  const handleGenerate = async () => {
+    try {
+      const result = await fetch("http://localhost:3000/images", {
+        method: "POST",
+        body: JSON.stringify({
+          name: form.name,
+          prompt: form.prompt,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      console.log("Generated image url :", result);
+    } catch (error) {
+      console.log("Error generating image :", error);
+    }
+  };
 
   const handleSubmit = () => {};
 
